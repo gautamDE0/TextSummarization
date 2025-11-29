@@ -10,8 +10,8 @@ from rouge_score import rouge_scorer
 
 app = Flask(__name__)
 
-# Set cache directory to D drive
-os.environ['TRANSFORMERS_CACHE'] = 'D:/huggingface_models'
+# Set cache directory to local directory
+os.environ['TRANSFORMERS_CACHE'] = './huggingface_models'
 
 # Download required NLTK data
 nltk.download('punkt', quiet=True)
@@ -20,8 +20,8 @@ print("Loading models...")
 
 # Initialize model for text processing
 model_name = "facebook/bart-large-cnn"  # Using BART model which is better for summarization
-tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir='D:/huggingface_models')
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name, cache_dir='D:/huggingface_models')
+tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir='./huggingface_models')
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name, cache_dir='./huggingface_models')
 
 # Initialize ROUGE scorer
 rouge_scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
@@ -361,4 +361,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
         test_summarization()
     else:
-        app.run(debug=True) 
+        # For deployment, get port from environment variable or default to 5000
+        import os
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=False) 
