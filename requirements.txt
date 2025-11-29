@@ -19,4 +19,5 @@ protobuf>=3.20.0
 accelerate>=0.20.0
 tqdm>=4.65.0
 huggingface-hub>=0.19.0
-gunicorn>=20.1.0 
+gunicorn>=20.1.0
+rouge-score>=0.1.2 
